@@ -4,7 +4,16 @@ import { Box, Image, Text, useColorModeValue } from '@chakra-ui/react'
 import { colors } from '../../constants'
 import { DefaultImg } from '../../assets/images'
 
-const CategoryCard = () => {
+interface Props {
+  category: {
+    title: string
+    questionsCount: string
+    image: string
+    description: string
+  }
+}
+
+const CategoryCard = ({ category }: Props) => {
   const cardColor = useColorModeValue('white', colors.darkSecondary)
   const textColor = useColorModeValue('black', 'white')
 
@@ -32,7 +41,7 @@ const CategoryCard = () => {
         overflow="hidden"
       >
         <Image
-          src="https://images-na.ssl-images-amazon.com/images/S/pv-target-images/fdb0c0c13603e8d2724dde07cee6bf1010d9f16633ad30fd71d6d14267bab92e._RI_V_TTW_.jpg"
+          src={category.image}
           alt="category"
           objectFit="initial"
           height={'13rem'}
@@ -46,10 +55,10 @@ const CategoryCard = () => {
           textAlign="left"
           color={textColor}
         >
-          I dont play the odds, i play the man!
+          {category.title}
         </Text>
         <Text fontSize={'small'} textAlign="left" color={textColor} mt="0.5rem">
-          Try the quiz to test yourself. <br /> 5 questions
+          {category.description} <br /> {category.questionsCount} questions
         </Text>
       </Box>
     </Box>

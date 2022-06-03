@@ -9,14 +9,23 @@ import {
   useDisclosure,
   ScaleFade,
 } from '@chakra-ui/react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { ColorBtn, PrimaryButton, CategoryCard } from '../../components'
+import { getCategoriesAction, categoriesState } from '../../store'
 import { Barney } from '../../assets/images'
+//import { getCategoriesService } from '../../services'
 import './styles.scss'
 
 const Landing = () => {
+  const dispatch = useDispatch()
   const svgColor = useColorModeValue('black', 'white')
   const { isOpen, onToggle } = useDisclosure()
+  const categories = useSelector(categoriesState)
+
+  React.useEffect(() => {
+    dispatch({ type: getCategoriesAction })
+  }, [])
 
   return (
     <Box textAlign="center" fontSize="xl">
@@ -84,9 +93,10 @@ const Landing = () => {
             gap="2rem"
             flexWrap="wrap"
           >
-            <CategoryCard />
-            <CategoryCard />
-            <CategoryCard />
+            {categories &&
+              categories.map((category: any, index: number) => (
+                <CategoryCard category={category} key={index} />
+              ))}
           </Flex>
         </ScaleFade>
       </Grid>
