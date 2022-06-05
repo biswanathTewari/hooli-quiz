@@ -1,15 +1,18 @@
 import * as React from 'react'
 import { ChakraProvider, theme } from '@chakra-ui/react'
 import { Provider } from 'react-redux'
+import { BrowserRouter as Router } from 'react-router-dom'
 
-import { Landing } from './Pages'
+import Navigation from './navigation'
 import { store } from './store'
 import './styles.scss'
 
 export const App = () => (
-  <Provider store={store}>
-    <ChakraProvider theme={theme}>
-      <Landing />
-    </ChakraProvider>
-  </Provider>
+  <Router>
+    <Provider store={store}>
+      <ChakraProvider theme={theme}>
+        <Navigation />
+      </ChakraProvider>
+    </Provider>
+  </Router>
 )
