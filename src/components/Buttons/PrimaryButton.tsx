@@ -4,7 +4,7 @@ import { Button } from '@chakra-ui/react'
 
 interface Props {
   text: string
-  onClick: () => void
+  onClick: any
   styles?: {}
   isLoading?: boolean
   loadingText?: string
