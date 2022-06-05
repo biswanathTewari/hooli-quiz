@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link as ReachLink } from 'react-router-dom'
 import {
   Box,
   Grid,
@@ -11,6 +12,7 @@ import {
   FormLabel,
   Input,
   Checkbox,
+  Link,
 } from '@chakra-ui/react'
 
 import { PrimaryButton } from '../../components'
@@ -106,7 +108,12 @@ const Login = () => {
               Remember me
             </Checkbox>
 
-            <Flex w={'100%'} justifyContent="center" mt={'2rem'}>
+            <Flex
+              w={'100%'}
+              flexDirection="column"
+              alignItems="center"
+              mt={'2rem'}
+            >
               <PrimaryButton
                 isLoading={false}
                 loadingText="Logging in..."
@@ -116,6 +123,18 @@ const Login = () => {
                   padding: '1rem 4.5rem',
                 }}
               />
+
+              <Text position={'absolute'} bottom="5rem" fontSize={'small'}>
+                New here?{' '}
+                <Link
+                  as={ReachLink}
+                  to="/signup"
+                  color="teal.500"
+                  fontSize={'small'}
+                >
+                  Create new Account
+                </Link>
+              </Text>
             </Flex>
           </Box>
         </Flex>
