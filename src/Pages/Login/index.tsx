@@ -13,7 +13,9 @@ import {
   Input,
   Checkbox,
   Link,
+  HStack,
 } from '@chakra-ui/react'
+import { AiOutlineLeft } from 'react-icons/ai'
 
 import { PrimaryButton } from '../../components'
 import { BooksBG, QuotesPNG, VectorPNG } from '../../assets/images'
@@ -74,6 +76,7 @@ const Login = () => {
           h="100%"
           justifyContent={'center'}
           alignItems={'center'}
+          position="relative"
         >
           <Box color={textColor}>
             <Text fontSize={'x-large'} fontWeight="700">
@@ -137,6 +140,12 @@ const Login = () => {
               </Text>
             </Flex>
           </Box>
+          <HStack position={'absolute'} top={'3rem'} left={'4rem'}>
+            <AiOutlineLeft />
+            <Link as={ReachLink} to="/" fontSize={'sm'}>
+              Back{' '}
+            </Link>
+          </HStack>
         </Flex>
       </GridItem>
     </Grid>
