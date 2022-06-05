@@ -1,7 +1,7 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 
-import { Landing, Login } from '../Pages'
+import { Landing, Login, Signup } from '../Pages'
 
 const Navigation = () => {
   return (
@@ -11,6 +11,7 @@ const Navigation = () => {
 
       {/* auth routes */}
       <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
     </Routes>
   )
 }
