@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link as ReachLink } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link as ReachLink, useLocation, Navigate } from 'react-router-dom'
 import {
   Box,
   Grid,
@@ -14,14 +15,69 @@ import {
   Checkbox,
   Link,
   HStack,
+  useToast,
+  FormErrorMessage,
 } from '@chakra-ui/react'
 import { AiOutlineLeft } from 'react-icons/ai'
 
 import { PrimaryButton } from '../../components'
+import { useAuthForm } from '../../hooks'
+import { getIsLoggedIn, loginAction, getIsUserLoading } from '../../store'
 import { BooksBG, QuotesPNG, VectorPNG } from '../../assets/images'
 
 const Login = () => {
   const textColor = useColorModeValue('black', 'white')
+  const {
+    creds,
+    error,
+    onBlurHandler,
+    onChangeHandler,
+    hackHandler,
+    validateForm,
+    resetForm,
+  } = useAuthForm('', true)
+  const toast = useToast()
+  const dispatch = useDispatch()
+  const location: any = useLocation()
+  const from = location.state ? location.state.from?.pathname : '/'
+  const isLoggedIn = useSelector(getIsLoggedIn)
+  const isLoading = useSelector(getIsUserLoading)
+
+  const onSubmitHandler = (e: any) => {
+    e.preventDefault()
+    if (validateForm()) {
+      const payload = {
+        email: creds.email,
+        password: creds.password,
+        toast,
+        from,
+      }
+      dispatch({ type: loginAction, payload })
+      resetForm()
+    } else {
+      toast({
+        title: 'Bhai kya kar raha hai tu? hack karna hai.',
+        description: 'Please login now.',
+        status: 'error',
+        duration: 4000,
+        isClosable: true,
+      })
+    }
+  }
+
+  const htmlHacker = (e: any) => {
+    e.preventDefault()
+    hackHandler()
+    toast({
+      title: 'Succesfully hacked.',
+      description: 'Please press on login.',
+      status: 'info',
+      duration: 4000,
+      isClosable: true,
+    })
+  }
+
+  if (isLoggedIn) return <Navigate to={'/'} replace />
 
   return (
     <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', '45% 1fr']}>
@@ -85,27 +141,47 @@ const Login = () => {
             <Text fontSize={'small'} fontWeight="400" color={'gray.400'}>
               with your registered email
             </Text>
-            <FormControl isRequired mt={'3rem'}>
-              <FormLabel htmlFor="first-name" fontSize="medium">
+            <FormControl
+              isRequired
+              mt={'3rem'}
+              isInvalid={error?.email ? true : false}
+            >
+              <FormLabel htmlFor="email" fontSize="medium">
                 Email
               </FormLabel>
               <Input
-                id="first-name"
+                id="email"
                 placeholder="bizan@hooli.com"
                 fontSize="medium"
+                value={creds.email}
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
               />
+              {error.email && (
+                <FormErrorMessage>{error.email}</FormErrorMessage>
+              )}
             </FormControl>
 
-            <FormControl isRequired mt={'1rem'}>
-              <FormLabel htmlFor="first-name" fontSize="medium">
+            <FormControl
+              isRequired
+              mt={'1rem'}
+              isInvalid={error?.password ? true : false}
+            >
+              <FormLabel htmlFor="password" fontSize="medium">
                 Password
               </FormLabel>
               <Input
-                id="first-name"
+                id="password"
                 placeholder="main nahi bataunga"
                 type={'password'}
                 fontSize="medium"
+                value={creds.password}
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
               />
+              {error.password && (
+                <FormErrorMessage>{error.password}</FormErrorMessage>
+              )}
             </FormControl>
             <Checkbox fontSize={'1rem'} defaultChecked mt={'1rem'}>
               Remember me
@@ -118,12 +194,22 @@ const Login = () => {
               mt={'2rem'}
             >
               <PrimaryButton
-                isLoading={false}
+                isLoading={isLoading}
                 loadingText="Logging in..."
                 text="Login"
-                onClick={() => {}}
+                onClick={onSubmitHandler}
                 styles={{
                   padding: '1rem 4.5rem',
+                }}
+              />
+              <PrimaryButton
+                isLoading={false}
+                loadingText="hacking..."
+                text="Hack"
+                onClick={htmlHacker}
+                styles={{
+                  padding: '1rem 4.5rem',
+                  marginTop: '1rem',
                 }}
               />
 
