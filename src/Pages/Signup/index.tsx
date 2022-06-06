@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link as ReachLink } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link as ReachLink, Navigate } from 'react-router-dom'
 import {
   Box,
   Grid,
@@ -14,14 +15,54 @@ import {
   Checkbox,
   Link,
   HStack,
+  useToast,
+  FormErrorMessage,
 } from '@chakra-ui/react'
 import { AiOutlineLeft } from 'react-icons/ai'
 
 import { PrimaryButton } from '../../components'
+import { useAuthForm } from '../../hooks'
+import { getIsLoggedIn, registerAction, getIsUserLoading } from '../../store'
 import { BooksBG, QuotesPNG, VectorPNG } from '../../assets/images'
 
 const Signup = () => {
   const textColor = useColorModeValue('black', 'white')
+  const {
+    creds,
+    error,
+    onBlurHandler,
+    onChangeHandler,
+    validateForm,
+    resetForm,
+    checkHandler,
+  } = useAuthForm('Please agree to the terms and conditions')
+  const toast = useToast()
+  const dispatch = useDispatch()
+  const isLoggedIn = useSelector(getIsLoggedIn)
+  const isLoading = useSelector(getIsUserLoading)
+
+  const onSubmitHandler = (e: any) => {
+    e.preventDefault()
+    if (validateForm()) {
+      const payload = {
+        email: creds.email,
+        password: creds.password,
+        toast,
+      }
+      dispatch({ type: registerAction, payload })
+      resetForm()
+    } else {
+      toast({
+        title: 'Something went wrong',
+        description: 'Please try again.',
+        status: 'error',
+        duration: 4000,
+        isClosable: true,
+      })
+    }
+  }
+
+  if (isLoggedIn) return <Navigate to={'/'} replace />
 
   return (
     <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', '45% 1fr']}>
@@ -85,13 +126,31 @@ const Signup = () => {
             <Text fontSize={'small'} fontWeight="400" color={'gray.400'}>
               create new account
             </Text>
-            <FormControl isRequired mt={'3rem'}>
-              <FormLabel htmlFor="name" fontSize="medium">
+            <FormControl
+              isRequired
+              mt={'3rem'}
+              isInvalid={error?.fullName ? true : false}
+            >
+              <FormLabel htmlFor="fullName" fontSize="medium">
                 Name
               </FormLabel>
-              <Input id="name" placeholder="Your name" fontSize="medium" />
+              <Input
+                id="fullName"
+                placeholder="Your name"
+                fontSize="medium"
+                value={creds.fullName}
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
+              />
+              {error.fullName && (
+                <FormErrorMessage>{error.fullName}</FormErrorMessage>
+              )}
             </FormControl>
-            <FormControl isRequired mt={'1rem'}>
+            <FormControl
+              isRequired
+              mt={'1rem'}
+              isInvalid={error?.email ? true : false}
+            >
               <FormLabel htmlFor="email" fontSize="medium">
                 Email
               </FormLabel>
@@ -99,10 +158,20 @@ const Signup = () => {
                 id="email"
                 placeholder="bizan@hooli.com"
                 fontSize="medium"
+                value={creds.email}
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
               />
+              {error.email && (
+                <FormErrorMessage>{error.email}</FormErrorMessage>
+              )}
             </FormControl>
 
-            <FormControl isRequired mt={'1rem'}>
+            <FormControl
+              isRequired
+              mt={'1rem'}
+              isInvalid={error?.password ? true : false}
+            >
               <FormLabel htmlFor="password" fontSize="medium">
                 Password
               </FormLabel>
@@ -111,11 +180,34 @@ const Signup = () => {
                 placeholder="main nahi bataunga"
                 type={'password'}
                 fontSize="medium"
+                value={creds.password}
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
               />
+              <Box maxWidth={'20rem'}>
+                {error.password && (
+                  <FormErrorMessage fontSize={'small'}>
+                    {error.password}
+                  </FormErrorMessage>
+                )}
+              </Box>
             </FormControl>
-            <Checkbox fontSize={'1rem'} defaultChecked mt={'1rem'}>
-              I accept the terms and conditions
-            </Checkbox>
+
+            <FormControl isInvalid={error?.checkValue ? true : false}>
+              <Checkbox
+                fontSize={'1rem'}
+                isInvalid={error?.checkValue ? true : false}
+                mt={'1rem'}
+                checked={creds.checkValue}
+                onChange={checkHandler}
+                id="remember"
+              >
+                I accept the terms and conditions
+              </Checkbox>
+              {error.checkValue && (
+                <FormErrorMessage>{error.checkValue}</FormErrorMessage>
+              )}
+            </FormControl>
 
             <Flex
               w={'100%'}
@@ -124,10 +216,10 @@ const Signup = () => {
               mt={'2rem'}
             >
               <PrimaryButton
-                isLoading={false}
+                isLoading={isLoading}
                 loadingText="Creating..."
                 text="Create account"
-                onClick={() => {}}
+                onClick={onSubmitHandler}
                 styles={{
                   padding: '1rem 4.5rem',
                 }}
