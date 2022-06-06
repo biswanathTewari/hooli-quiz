@@ -5,8 +5,17 @@ import {
   loginAction,
   loginSuccessAction,
   loginFailureAction,
+  registerAction,
+  registerSuccessAction,
+  registerFailureAction,
 } from './user.action'
-import { loginService, LoginReqProp, history } from '../../services'
+import {
+  loginService,
+  LoginReqProp,
+  signupService,
+  SignupReqProp,
+  history,
+} from '../../services'
 
 interface loginSagaProps {
   type: typeof loginAction
@@ -41,6 +50,39 @@ function* loginSaga(action: loginSagaProps): SagaIterator {
   }
 }
 
+interface registerSagaProps {
+  type: typeof registerAction
+  payload: SignupReqProp
+}
+
+function* registerSaga(action: registerSagaProps): SagaIterator {
+  const { email, password, toast } = action.payload
+  try {
+    const response: SagaReturnType<typeof signupService> = yield call(
+      signupService,
+      { email, password },
+    )
+    yield put({ type: registerSuccessAction, payload: response })
+    toast({
+      title: 'Registered.',
+      description: 'You have successfully registered.',
+      status: 'success',
+      duration: 4000,
+      isClosable: true,
+    })
+  } catch (err) {
+    yield put({ type: registerFailureAction })
+    toast({
+      title: 'Failed to register.',
+      description: 'Oops! Something went wrong.',
+      status: 'error',
+      duration: 4000,
+      isClosable: true,
+    })
+  }
+}
+
 export default function* userSaga() {
   yield takeLatest(loginAction, loginSaga)
+  yield takeLatest(registerAction, registerSaga)
 }

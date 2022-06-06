@@ -3,6 +3,9 @@ import {
   loginAction,
   loginSuccessAction,
   loginFailureAction,
+  registerAction,
+  registerSuccessAction,
+  registerFailureAction,
 } from './user.action'
 
 interface Props {
@@ -37,6 +40,23 @@ const UserReducer = (state = initialState, action: any) => {
         isLoggedIn: true,
       }
     case loginFailureAction:
+      return {
+        ...state,
+        isLoading: false,
+      }
+    case registerAction:
+      return {
+        ...state,
+        isLoading: true,
+      }
+    case registerSuccessAction:
+      return {
+        ...state,
+        isLoading: false,
+        user: action.payload,
+        isLoggedIn: true,
+      }
+    case registerFailureAction:
       return {
         ...state,
         isLoading: false,
