@@ -2,14 +2,16 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware from '@redux-saga/core'
 
 import CategoriesReducer from './categories/categories.reducer'
+import UserReducer from './user/user.reducer'
 import { rootSaga } from './rootSaga'
 
 const combineReducer = combineReducers({
   Categories: CategoriesReducer,
+  User: UserReducer,
 })
 
 const rootReducer = (state: any, action: any) => {
-  if (action.type === 'auth/logout') {
+  if (action.type === 'LOGOUT') {
     state = undefined
   }
   return combineReducer(state, action)
@@ -30,3 +32,5 @@ export type AppDispatch = typeof store.dispatch
 
 export * from './categories/categories.action'
 export * from './categories/categories.selector'
+export * from './user/user.action'
+export * from './user/user.selector'
