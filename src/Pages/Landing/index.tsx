@@ -8,17 +8,24 @@ import {
   useDisclosure,
   ScaleFade,
 } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { PrimaryButton, CategoryCard, Navbar } from '../../components'
 import { getCategoriesAction, categoriesState } from '../../store'
+import NavigationActions from '../../navigation/NavigationActions'
 import { Barney } from '../../assets/images'
 import './styles.scss'
 
 const Landing = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { isOpen, onToggle } = useDisclosure()
   const categories = useSelector(categoriesState)
+
+  React.useEffect(() => {
+    NavigationActions.setNavigation(navigate)
+  }, [])
 
   React.useEffect(() => {
     dispatch({ type: getCategoriesAction })

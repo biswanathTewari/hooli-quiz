@@ -1,7 +1,8 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 
-import { Landing, Login, Signup } from '../Pages'
+import { Landing, Login, Signup, Rules } from '../Pages'
+import ProtectedRoute from './ProtectedRoute'
 
 const Navigation = () => {
   return (
@@ -12,6 +13,18 @@ const Navigation = () => {
       {/* auth routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+
+      {/* protected routes */}
+      <Route
+        path="/rules"
+        element={
+          <ProtectedRoute>
+            <Rules />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route path="*" element={<div>404</div>} />
     </Routes>
   )
 }

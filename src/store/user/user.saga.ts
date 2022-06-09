@@ -30,7 +30,8 @@ function* loginSaga(action: loginSagaProps): SagaIterator {
       { email, password },
     )
     yield put({ type: loginSuccessAction, payload: response })
-    history.replace(from || '/')
+    // @ts-ignore
+    history.replace(from)
     toast({
       title: 'Logged in.',
       description: 'You have successfully logged in.',
@@ -39,6 +40,7 @@ function* loginSaga(action: loginSagaProps): SagaIterator {
       isClosable: true,
     })
   } catch (err) {
+    console.log(err)
     yield put({ type: loginFailureAction })
     toast({
       title: 'Failed to login.',
