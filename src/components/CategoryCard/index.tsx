@@ -32,7 +32,7 @@ const CategoryCard = ({ category }: Props) => {
       _hover={{
         transform: 'scale(1.1)',
       }}
-      onClick={() => navigate(`/rules`)}
+      onClick={() => navigate(`/quiz`)}
     >
       <Box
         backgroundImage={DefaultImg}

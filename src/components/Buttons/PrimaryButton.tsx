@@ -8,6 +8,7 @@ interface Props {
   styles?: {}
   isLoading?: boolean
   loadingText?: string
+  fontSize?: string
 }
 
 const PrimaryButton = ({
@@ -16,12 +17,13 @@ const PrimaryButton = ({
   styles = {},
   isLoading = false,
   loadingText = '',
+  fontSize = 'large',
 }: Props) => {
   return (
     <Button
       onClick={onClick}
       colorScheme="teal"
-      fontSize="large"
+      fontSize={fontSize}
       isLoading={isLoading}
       loadingText={loadingText}
       borderRadius={'2rem'}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 
-import { Landing, Login, Signup, Rules } from '../Pages'
+import { Landing, Login, Signup, Quiz } from '../Pages'
 import ProtectedRoute from './ProtectedRoute'
 
 const Navigation = () => {
@@ -16,10 +16,10 @@ const Navigation = () => {
 
       {/* protected routes */}
       <Route
-        path="/rules"
+        path="/quiz"
         element={
           <ProtectedRoute>
-            <Rules />
+            <Quiz />
           </ProtectedRoute>
         }
       />
