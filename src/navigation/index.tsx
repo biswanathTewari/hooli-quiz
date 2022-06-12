@@ -16,7 +16,7 @@ const Navigation = () => {
 
       {/* protected routes */}
       <Route
-        path="/quiz"
+        path="/quiz/:id"
         element={
           <ProtectedRoute>
             <Quiz />

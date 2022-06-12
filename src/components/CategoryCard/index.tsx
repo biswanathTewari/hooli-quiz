@@ -7,6 +7,7 @@ import { DefaultImg } from '../../assets/images'
 
 interface Props {
   category: {
+    id: string
     title: string
     questionsCount: string
     image: string
@@ -32,7 +33,7 @@ const CategoryCard = ({ category }: Props) => {
       _hover={{
         transform: 'scale(1.1)',
       }}
-      onClick={() => navigate(`/quiz`)}
+      onClick={() => navigate(`/quiz/${category.id}`)}
     >
       <Box
         backgroundImage={DefaultImg}
