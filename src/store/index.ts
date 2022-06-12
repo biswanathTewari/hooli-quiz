@@ -3,11 +3,13 @@ import createSagaMiddleware from '@redux-saga/core'
 
 import CategoriesReducer from './categories/categories.reducer'
 import UserReducer from './user/user.reducer'
+import QuizReducer from './quiz/quiz.reducer'
 import { rootSaga } from './rootSaga'
 
 const combineReducer = combineReducers({
   Categories: CategoriesReducer,
   User: UserReducer,
+  Quiz: QuizReducer,
 })
 
 const rootReducer = (state: any, action: any) => {
@@ -34,3 +36,5 @@ export * from './categories/categories.action'
 export * from './categories/categories.selector'
 export * from './user/user.action'
 export * from './user/user.selector'
+export * from './quiz/quiz.actions'
+export * from './quiz/quiz.selector'
