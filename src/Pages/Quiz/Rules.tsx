@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Box,
   Flex,
@@ -15,9 +16,11 @@ import { Quiz } from '../../services'
 
 interface Props extends Omit<Quiz, 'questions'> {
   loading: boolean
+  onStart: Function
 }
 
-const Rules = ({ info, loading }: Props) => {
+const Rules = ({ info, loading, onStart }: Props) => {
+  const navigate = useNavigate()
   if (loading) return <Loader />
   return (
     <Box height={'100%'} width={'100%'} flexDir={'column'}>
@@ -142,8 +145,18 @@ const Rules = ({ info, loading }: Props) => {
         bottom={'1rem'}
         mt={['1rem', '2rem', '2rem']}
       >
-        <PrimaryButton text="Back" onClick={() => {}} fontSize="md" />
-        <PrimaryButton text="Start" onClick={() => {}} fontSize="md" />
+        <PrimaryButton
+          text="Back"
+          onClick={() => {
+            navigate('/')
+          }}
+          fontSize="md"
+        />
+        <PrimaryButton
+          text="Start"
+          onClick={() => onStart('play')}
+          fontSize="md"
+        />
       </HStack>
     </Box>
   )
