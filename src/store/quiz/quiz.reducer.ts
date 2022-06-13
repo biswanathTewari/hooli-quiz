@@ -3,15 +3,12 @@ import {
   getQuizAction,
   getQuizFailureAction,
   getQuizSuccessAction,
+  setUserRepAction,
 } from './quiz.actions'
-
-interface QuestionRes extends Question {
-  userRep: string
-}
 
 interface Props extends Quiz {
   isLoading: boolean
-  questions: Array<QuestionRes>
+  questions: Array<Question>
 }
 
 const initialState: Props = {
@@ -47,6 +44,24 @@ const QuizReducer = (state = initialState, action: any) => {
         ...state,
         isLoading: false,
       }
+
+    case setUserRepAction: {
+      let tempQuestions: Array<Question> = state.questions.map(
+        (question: Question) => {
+          if (question.id === action.payload.id) {
+            return {
+              ...question,
+              userRep: action.payload.userRep,
+            }
+          }
+          return question
+        },
+      )
+      return {
+        ...state,
+        questions: tempQuestions,
+      }
+    }
 
     default:
       return state

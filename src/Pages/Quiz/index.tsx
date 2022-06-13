@@ -6,7 +6,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import Rules from './Rules'
 import Play from './Play'
 import { Navbar } from '../../components'
-import { getQuizAction, getQuizInfo, getQuizIsLoading } from '../../store'
+import {
+  getQuizAction,
+  getQuizInfo,
+  getQuizIsLoading,
+  getQuizQuestions,
+  setUserRepAction,
+} from '../../store'
 
 const Quiz = () => {
   const dispatch = useDispatch()
@@ -16,6 +22,11 @@ const Quiz = () => {
   const [mode, setMode] = React.useState<'rules' | 'play' | 'results'>('rules')
   const info = useSelector(getQuizInfo)
   const isLoading = useSelector(getQuizIsLoading)
+  const questions = useSelector(getQuizQuestions)
+
+  const handleResponse = (userRep: string, id: string) => {
+    dispatch({ type: setUserRepAction, payload: { userRep, id } })
+  }
 
   React.useEffect(() => {
     dispatch({ type: getQuizAction, payload: { id } })
@@ -36,7 +47,14 @@ const Quiz = () => {
         {mode === 'rules' && (
           <Rules info={info} loading={isLoading} onStart={setMode} />
         )}
-        {mode === 'play' && <Play info={info} loading={isLoading} />}
+        {mode === 'play' && (
+          <Play
+            info={info}
+            loading={isLoading}
+            questions={questions}
+            handleResponse={handleResponse}
+          />
+        )}
       </Box>
     </Box>
   )

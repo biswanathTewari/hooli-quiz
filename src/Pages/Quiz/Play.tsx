@@ -14,11 +14,33 @@ import { DefaultImg } from '../../assets/images'
 import { PrimaryButton, Loader } from '../../components'
 import { Quiz } from '../../services'
 
-interface Props extends Omit<Quiz, 'questions'> {
+interface Props extends Quiz {
   loading: boolean
+  handleResponse: Function
 }
 
-const Play = ({ info, loading }: Props) => {
+const Play = ({ info, loading, questions, handleResponse }: Props) => {
+  const [selected, setSelected] = React.useState<number>(0)
+  const [userRes, setUserRes] = React.useState<string>('NA')
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    setUserRes(e.target.value)
+  }
+
+  const nextHandler = () => {
+    handleResponse(userRes, questions[selected].id)
+    setUserRes('NA')
+    if (selected + 1 === questions.length) return
+    setSelected(selected + 1)
+  }
+
+  const submitHandler = () => {
+    handleResponse(userRes, questions[selected].id)
+    setUserRes('NA')
+    return console.log('done open up the modal', questions)
+  }
+
   if (loading) return <Loader />
   return (
     <Box
@@ -69,16 +91,14 @@ const Play = ({ info, loading }: Props) => {
             fontWeight="extrabold"
             mb={'1rem'}
           >
-            Question 1/5
+            {`Question ${selected + 1}/${questions.length}`}
           </Text>
           <Text
             fontSize={['small', 'small', 'medium', 'medium']}
             fontWeight="400"
             mb={'1rem'}
           >
-            Guy Bailey, Roy Hackett and Paul Stephenson made history in 1963, as
-            part of a protest against a bus company that refused to employ black
-            and Asian drivers in which UK city?
+            {questions[selected].question}
           </Text>
         </Box>
       </Flex>
@@ -89,43 +109,43 @@ const Play = ({ info, loading }: Props) => {
       >
         Choose answer
       </Text>
-      <RadioGroup defaultValue="2">
+      <RadioGroup defaultValue="NA">
         <Stack gap={'0.75rem'}>
           <Radio
             size="lg"
-            name="1"
-            value={'1'}
+            name="A"
+            value={questions[selected].A}
+            onChange={handleChange}
             colorScheme="teal"
-            defaultChecked
           >
-            Radio
+            {questions[selected].A}
           </Radio>
           <Radio
             size="lg"
-            name="1"
-            value={'2'}
+            name="B"
+            value={questions[selected].B}
+            onChange={handleChange}
             colorScheme="teal"
-            defaultChecked
           >
-            Radio
+            {questions[selected].B}
           </Radio>
           <Radio
             size="lg"
-            name="1"
-            value={'3'}
+            name="C"
+            value={questions[selected].C}
+            onChange={handleChange}
             colorScheme="teal"
-            defaultChecked
           >
-            Radio
+            {questions[selected].C}
           </Radio>
           <Radio
             size="lg"
-            name="1"
-            value={'4'}
+            name="D"
+            value={questions[selected].D}
+            onChange={handleChange}
             colorScheme="teal"
-            defaultChecked
           >
-            Radio
+            {questions[selected].D}
           </Radio>
         </Stack>
       </RadioGroup>
@@ -137,8 +157,10 @@ const Play = ({ info, loading }: Props) => {
         position={'absolute'}
         bottom={'1rem'}
       >
-        <PrimaryButton text="Back" onClick={() => {}} fontSize="md" />
-        <PrimaryButton text="Start" onClick={() => {}} fontSize="md" />
+        <PrimaryButton text="Submit" onClick={submitHandler} fontSize="md" />
+        {selected + 1 !== questions.length && (
+          <PrimaryButton text="Next" onClick={nextHandler} fontSize="md" />
+        )}
       </HStack>
     </Box>
   )

@@ -17,6 +17,7 @@ export interface Question {
   B: string
   C: string
   D: string
+  userRep: string
 }
 
 export interface Quiz {
@@ -56,6 +57,7 @@ export const getQuizService = async ({ id }: QuizReq): Promise<Quiz> => {
       B: doc.data().B,
       C: doc.data().C,
       D: doc.data().D,
+      userRep: 'NA',
     })
   })
 
