@@ -78,6 +78,7 @@ const Landing = () => {
             ]}
             gap="2rem"
             flexWrap="wrap"
+            minH={'25rem'}
           >
             {categories &&
               categories.map((category: any, index: number) => (
