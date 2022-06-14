@@ -1,6 +1,6 @@
 import React from 'react'
 import Lottie from 'react-lottie'
-import { Box } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 
 import animation from '../../assets/lottie/loader.json'
 
@@ -12,9 +12,9 @@ const defaultOptions: any = {
 
 const Loader = () => {
   return (
-    <Box height={'100%'} width={'100%'}>
-      <Lottie options={defaultOptions} height={'75vh'} speed={1} />
-    </Box>
+    <Flex alignItems={'center'} height={'75vh'} width={'100%'}>
+      <Lottie options={defaultOptions} height={'35vh'} speed={1} />
+    </Flex>
   )
 }
 
