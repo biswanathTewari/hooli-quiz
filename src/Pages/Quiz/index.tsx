@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Box, useColorModeValue } from '@chakra-ui/react'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -14,10 +14,12 @@ import {
   getQuizQuestions,
   setUserRepAction,
   getQuizScore,
+  clearScoreAction,
 } from '../../store'
 
 const Quiz = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { id } = useParams()
   const bgColor = useColorModeValue('white', '#282f3c')
   const containerColor = useColorModeValue('gray.50', '')
@@ -32,12 +34,17 @@ const Quiz = () => {
     dispatch({ type: setUserRepAction, payload: { userRep, id } })
   }
 
+  const newQuiz = () => {
+    dispatch({ type: clearScoreAction })
+    navigate('/')
+  }
+
   React.useEffect(() => {
     dispatch({ type: getQuizAction, payload: { id } })
   }, [])
 
   return (
-    <Box px={10} py={3.5} height={'100vh'} bg={containerColor}>
+    <Box px={10} py={3.5} minH={'100vh'} bg={containerColor}>
       <Navbar />
       <Box
         width={'100%'}
@@ -62,7 +69,13 @@ const Quiz = () => {
             onReview={() => setMode('review')}
           />
         )}
-        {mode === 'review' && <Review />}
+        {mode === 'review' && (
+          <Review
+            questions={questions}
+            score={String((score / totalScore) * 100)}
+            onNewQuiz={newQuiz}
+          />
+        )}
       </Box>
     </Box>
   )

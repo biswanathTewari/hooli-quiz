@@ -4,6 +4,7 @@ import {
   getQuizFailureAction,
   getQuizSuccessAction,
   setUserRepAction,
+  clearScoreAction,
 } from './quiz.actions'
 
 interface Props extends Quiz {
@@ -66,6 +67,9 @@ const QuizReducer = (state = initialState, action: any) => {
         questions: tempQuestions,
       }
     }
+
+    case clearScoreAction:
+      return initialState
 
     default:
       return state
