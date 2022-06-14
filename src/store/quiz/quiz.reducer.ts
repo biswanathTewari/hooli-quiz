@@ -8,7 +8,7 @@ import {
 
 interface Props extends Quiz {
   isLoading: boolean
-  questions: Array<Question>
+  score: number
 }
 
 const initialState: Props = {
@@ -22,6 +22,7 @@ const initialState: Props = {
     time: '',
   },
   questions: [],
+  score: 0,
 }
 
 const QuizReducer = (state = initialState, action: any) => {
@@ -46,9 +47,11 @@ const QuizReducer = (state = initialState, action: any) => {
       }
 
     case setUserRepAction: {
+      let newScore = state.score
       let tempQuestions: Array<Question> = state.questions.map(
         (question: Question) => {
           if (question.id === action.payload.id) {
+            if (action.payload.userRep === question.answer) newScore += 10
             return {
               ...question,
               userRep: action.payload.userRep,
@@ -59,6 +62,7 @@ const QuizReducer = (state = initialState, action: any) => {
       )
       return {
         ...state,
+        score: newScore,
         questions: tempQuestions,
       }
     }

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import Rules from './Rules'
 import Play from './Play'
+import Review from './Review'
 import { Navbar } from '../../components'
 import {
   getQuizAction,
@@ -12,6 +13,7 @@ import {
   getQuizIsLoading,
   getQuizQuestions,
   setUserRepAction,
+  getQuizScore,
 } from '../../store'
 
 const Quiz = () => {
@@ -19,10 +21,12 @@ const Quiz = () => {
   const { id } = useParams()
   const bgColor = useColorModeValue('white', '#282f3c')
   const containerColor = useColorModeValue('gray.50', '')
-  const [mode, setMode] = React.useState<'rules' | 'play' | 'results'>('rules')
+  const [mode, setMode] = React.useState<'rules' | 'play' | 'review'>('rules')
   const info = useSelector(getQuizInfo)
   const isLoading = useSelector(getQuizIsLoading)
   const questions = useSelector(getQuizQuestions)
+  const score = useSelector(getQuizScore)
+  const totalScore = questions.length * 10
 
   const handleResponse = (userRep: string, id: string) => {
     dispatch({ type: setUserRepAction, payload: { userRep, id } })
@@ -53,8 +57,12 @@ const Quiz = () => {
             loading={isLoading}
             questions={questions}
             handleResponse={handleResponse}
+            score={score}
+            totalScore={totalScore}
+            onReview={() => setMode('review')}
           />
         )}
+        {mode === 'review' && <Review />}
       </Box>
     </Box>
   )

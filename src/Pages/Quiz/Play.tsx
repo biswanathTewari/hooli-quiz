@@ -11,17 +11,34 @@ import {
 } from '@chakra-ui/react'
 
 import { DefaultImg } from '../../assets/images'
-import { PrimaryButton, Loader } from '../../components'
+import {
+  PrimaryButton,
+  Loader,
+  SubmitModal,
+  ResultModal,
+} from '../../components'
 import { Quiz } from '../../services'
 
 interface Props extends Quiz {
   loading: boolean
   handleResponse: Function
+  score: number
+  totalScore: number
+  onReview: Function
 }
 
-const Play = ({ info, loading, questions, handleResponse }: Props) => {
+const Play = ({
+  info,
+  loading,
+  questions,
+  handleResponse,
+  score,
+  totalScore,
+  onReview,
+}: Props) => {
   const [selected, setSelected] = React.useState<number>(0)
   const [userRes, setUserRes] = React.useState<string>('NA')
+  const [showScore, setShowScore] = React.useState<boolean>(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
@@ -157,11 +174,19 @@ const Play = ({ info, loading, questions, handleResponse }: Props) => {
         position={'absolute'}
         bottom={'1rem'}
       >
-        <PrimaryButton text="Submit" onClick={submitHandler} fontSize="md" />
+        <SubmitModal
+          submitHandler={submitHandler}
+          onYes={() => setShowScore(true)}
+        />
         {selected + 1 !== questions.length && (
           <PrimaryButton text="Next" onClick={nextHandler} fontSize="md" />
         )}
       </HStack>
+      <ResultModal
+        isOpen={showScore}
+        score={String((score / totalScore) * 100)}
+        onReview={onReview}
+      />
     </Box>
   )
 }
