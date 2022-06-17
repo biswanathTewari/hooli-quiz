@@ -39,6 +39,44 @@ const Play = ({
   const [selected, setSelected] = React.useState<number>(0)
   const [userRes, setUserRes] = React.useState<string>('NA')
   const [showScore, setShowScore] = React.useState<boolean>(false)
+  const [timeDisplay, setTimeDisplay] = React.useState<string>('00:00')
+  const [time, setTime] = React.useState<number>(-1)
+
+  const secondsToTime = (timeInSecs: number = 0) => {
+    // let h = Math.floor(timeInSecs / 3600)
+    //     .toString()
+    //     .padStart(2, '0'),
+    let m = Math.floor((timeInSecs % 3600) / 60)
+        .toString()
+        .padStart(2, '0'),
+      s = Math.floor(timeInSecs % 60)
+        .toString()
+        .padStart(2, '0')
+
+    return setTimeDisplay(`${m}m:${s}s`)
+  }
+
+  React.useEffect(() => {
+    setTime(10) //Number(info.time) * 60
+  }, [info.time])
+
+  React.useEffect(() => {
+    let interval: any
+
+    if (time > 0) {
+      interval = setInterval(() => {
+        setTime(time => time - 1)
+      }, 1000)
+    } else if (time === 0) {
+      clearInterval(interval)
+      submitHandler()
+      setShowScore(true)
+    }
+
+    secondsToTime(time)
+
+    return () => clearInterval(interval)
+  }, [time])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
@@ -76,7 +114,7 @@ const Play = ({
           {info.title}
         </Text>
         <Text fontSize={['large', 'x-large', 'x-large']} fontWeight="700">
-          {info.time} mins
+          {timeDisplay}
         </Text>
       </Flex>
       <Text fontSize={['medium', 'large', 'large']} fontWeight="400">
