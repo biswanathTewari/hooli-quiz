@@ -77,7 +77,9 @@ const Login = () => {
     })
   }
 
-  if (isLoggedIn) return <Navigate to={'/'} replace />
+  // redirect the user, if the user tries to access the login page while already logged in
+  // if "from" has a value, the saga will redirect the user to the page he was trying to access after logging in
+  if (isLoggedIn && from === '/') return <Navigate to={from} replace />
 
   return (
     <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', '45% 1fr']}>

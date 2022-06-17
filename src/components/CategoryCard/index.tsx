@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Box, Image, Text, useColorModeValue } from '@chakra-ui/react'
 
 import { colors } from '../../constants'
@@ -6,6 +7,7 @@ import { DefaultImg } from '../../assets/images'
 
 interface Props {
   category: {
+    id: string
     title: string
     questionsCount: string
     image: string
@@ -16,6 +18,7 @@ interface Props {
 const CategoryCard = ({ category }: Props) => {
   const cardColor = useColorModeValue('white', colors.darkSecondary)
   const textColor = useColorModeValue('black', 'white')
+  const navigate = useNavigate()
 
   return (
     <Box
@@ -30,6 +33,7 @@ const CategoryCard = ({ category }: Props) => {
       _hover={{
         transform: 'scale(1.1)',
       }}
+      onClick={() => navigate(`/quiz/${category.id}`)}
     >
       <Box
         backgroundImage={DefaultImg}

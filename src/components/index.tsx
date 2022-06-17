@@ -1,3 +1,6 @@
 export * from './ColorModeSwitcher'
 export * from './Buttons'
 export * from './CategoryCard'
+export * from './Navbar'
+export * from './Loader'
+export * from './Modals'
