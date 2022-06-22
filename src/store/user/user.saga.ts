@@ -56,7 +56,7 @@ interface registerSagaProps {
   payload: SignupReqProp
 }
 
-function* registerSaga(action: registerSagaProps): SagaIterator {
+export function* registerSaga(action: registerSagaProps): SagaIterator {
   const { email, password, toast } = action.payload
   try {
     const response: SagaReturnType<typeof signupService> = yield call(

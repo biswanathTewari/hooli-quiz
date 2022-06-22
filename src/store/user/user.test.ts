@@ -8,8 +8,8 @@ import {
   registerFailureAction,
 } from './user.action'
 import UserReducer, { Props, initialState } from './user.reducer'
-import { loginSaga } from './user.saga'
-import { loginService } from '../../services'
+import { loginSaga, registerSaga } from './user.saga'
+import { loginService, signupService } from '../../services'
 
 describe('testing user reducer', () => {
   test('try login in', async () => {
@@ -142,7 +142,7 @@ describe('testing user reducer', () => {
 })
 
 describe('testing user saga', () => {
-  test('success triggers success action with user', () => {
+  test('success triggers success action with user login', () => {
     // Arrange
 
     const generator = loginSaga({
@@ -178,7 +178,7 @@ describe('testing user saga', () => {
     )
   })
 
-  test('failure triggers failure action', () => {
+  test('failure triggers failure login action', () => {
     // Arrange
     const generator = loginSaga({
       type: loginAction,
@@ -203,5 +203,65 @@ describe('testing user saga', () => {
       call(loginService, { email: 'bizan@hooli.com', password: '12345' }),
     )
     expect(loginFailureEffect).toEqual(put({ type: loginFailureAction }))
+  })
+
+  test('success triggers success action with user registration', () => {
+    // Arrange
+    const generator = registerSaga({
+      type: registerAction,
+      payload: {
+        email: 'bizan@hooli.com',
+        password: '12345',
+        toast: {},
+      },
+    })
+
+    const user = {
+      uid: '12345',
+      email: 'bizan@hooli.com',
+      displayName: 'Bizan',
+      accessToken: '12345',
+    }
+
+    // Act
+    const signupEffect = generator.next({
+      email: 'bizan@hooli.com',
+      password: '12345',
+    }).value
+    const signupSuccess = generator.next(user).value
+
+    // Assert
+    expect(signupEffect).toEqual(
+      call(signupService, { email: 'bizan@hooli.com', password: '12345' }),
+    )
+    expect(signupSuccess).toEqual(
+      put({ type: registerSuccessAction, payload: user }),
+    )
+  })
+
+  test('failure triggers failure register action', () => {
+    // Arrange
+    const generator = registerSaga({
+      type: registerAction,
+      payload: {
+        email: 'bizan@hooli.com',
+        password: '12345',
+        toast: {},
+      },
+    })
+
+    // Act
+    const signupEffect = generator.next({
+      email: 'bizan@hooli.com',
+      password: '12345',
+    }).value
+    // @ts-ignore
+    const signupEffectFailure = generator.throw().value
+
+    // Assert
+    expect(signupEffect).toEqual(
+      call(signupService, { email: 'bizan@hooli.com', password: '12345' }),
+    )
+    expect(signupEffectFailure).toEqual(put({ type: registerFailureAction }))
   })
 })
