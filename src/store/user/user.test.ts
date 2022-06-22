@@ -1,3 +1,4 @@
+import { call, put } from 'redux-saga/effects'
 import {
   loginAction,
   loginSuccessAction,
@@ -7,6 +8,8 @@ import {
   registerFailureAction,
 } from './user.action'
 import UserReducer, { Props, initialState } from './user.reducer'
+import { loginSaga } from './user.saga'
+import { loginService } from '../../services'
 
 describe('testing user reducer', () => {
   test('try login in', async () => {
@@ -135,5 +138,70 @@ describe('testing user reducer', () => {
 
     // Assert
     expect(state).toEqual(newState)
+  })
+})
+
+describe('testing user saga', () => {
+  test('success triggers success action with user', () => {
+    // Arrange
+
+    const generator = loginSaga({
+      type: loginAction,
+      payload: {
+        email: 'bizan@hooli.com',
+        password: '12345',
+        toast: {},
+        from: '',
+      },
+    })
+
+    const user = {
+      uid: '12345',
+      email: 'bizan@hooli.com',
+      displayName: 'Bizan',
+      accessToken: '12345',
+    }
+
+    // Act
+    const loginEffect = generator.next({
+      email: 'bizan@hooli.com',
+      password: '12345',
+    }).value
+    const loginSuccessEffect = generator.next(user).value
+
+    // Assert
+    expect(loginEffect).toEqual(
+      call(loginService, { email: 'bizan@hooli.com', password: '12345' }),
+    )
+    expect(loginSuccessEffect).toEqual(
+      put({ type: loginSuccessAction, payload: user }),
+    )
+  })
+
+  test('failure triggers failure action', () => {
+    // Arrange
+    const generator = loginSaga({
+      type: loginAction,
+      payload: {
+        email: 'bizan@hooli.com',
+        password: '12345',
+        toast: {},
+        from: '',
+      },
+    })
+
+    // Act
+    const loginEffect = generator.next({
+      email: 'bizan@hooli.com',
+      password: '12345',
+    }).value
+    // @ts-ignore
+    const loginFailureEffect = generator.throw().value
+
+    // Assert
+    expect(loginEffect).toEqual(
+      call(loginService, { email: 'bizan@hooli.com', password: '12345' }),
+    )
+    expect(loginFailureEffect).toEqual(put({ type: loginFailureAction }))
   })
 })

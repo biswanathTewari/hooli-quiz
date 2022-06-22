@@ -22,7 +22,7 @@ interface loginSagaProps {
   payload: LoginReqProp
 }
 
-function* loginSaga(action: loginSagaProps): SagaIterator {
+export function* loginSaga(action: loginSagaProps): SagaIterator {
   const { email, password, toast, from } = action.payload
   try {
     const response: SagaReturnType<typeof loginService> = yield call(
@@ -40,7 +40,6 @@ function* loginSaga(action: loginSagaProps): SagaIterator {
       isClosable: true,
     })
   } catch (err) {
-    console.log(err)
     yield put({ type: loginFailureAction })
     toast({
       title: 'Failed to login.',
