@@ -1,4 +1,4 @@
-import { call, takeLatest, put } from 'redux-saga/effects'
+import { call, put } from 'redux-saga/effects'
 import {
   getCategoriesAction,
   getCategoriesSuccessAction,

@@ -13,7 +13,7 @@ interface QuizSagaProps {
   payload: QuizReq
 }
 
-function* getQuizSaga(action: QuizSagaProps): SagaIterator {
+export function* getQuizSaga(action: QuizSagaProps): SagaIterator {
   try {
     const response: Array<Quiz> = yield call(getQuizService, action.payload)
     yield put({ type: getQuizSuccessAction, payload: response })
