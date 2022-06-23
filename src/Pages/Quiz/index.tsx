@@ -7,6 +7,7 @@ import Rules from './Rules'
 import Play from './Play'
 import Review from './Review'
 import { Navbar } from '../../components'
+import { useDocumentTitle } from '../../hooks'
 import {
   getQuizAction,
   getQuizInfo,
@@ -29,6 +30,7 @@ const Quiz = () => {
   const questions = useSelector(getQuizQuestions)
   const score = useSelector(getQuizScore)
   const totalScore = questions.length * 10
+  useDocumentTitle(`Quiz | Hooli`)
 
   const handleResponse = (userRep: string, id: string) => {
     dispatch({ type: setUserRepAction, payload: { userRep, id } })

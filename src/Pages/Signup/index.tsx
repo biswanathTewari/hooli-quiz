@@ -21,7 +21,7 @@ import {
 import { AiOutlineLeft } from 'react-icons/ai'
 
 import { PrimaryButton } from '../../components'
-import { useAuthForm } from '../../hooks'
+import { useAuthForm, useDocumentTitle } from '../../hooks'
 import { getIsLoggedIn, registerAction, getIsUserLoading } from '../../store'
 import { BooksBG, QuotesPNG, VectorPNG } from '../../assets/images'
 
@@ -40,6 +40,7 @@ const Signup = () => {
   const dispatch = useDispatch()
   const isLoggedIn = useSelector(getIsLoggedIn)
   const isLoading = useSelector(getIsUserLoading)
+  useDocumentTitle('Signup | Hooli')
 
   const onSubmitHandler = (e: any) => {
     e.preventDefault()
