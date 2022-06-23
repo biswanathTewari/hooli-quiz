@@ -44,7 +44,7 @@ const Play = ({
   const [time, setTime] = React.useState<number>(-1)
 
   React.useEffect(() => {
-    setTime(10) //Number(info.time) * 60
+    setTime(Number(info.time) * 60)
   }, [info.time])
 
   React.useEffect(() => {
