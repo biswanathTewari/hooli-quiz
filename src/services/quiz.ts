@@ -43,9 +43,7 @@ export const getQuizService = async ({ id }: QuizReq): Promise<Quiz> => {
   const data: DocumentData | undefined | Quiz = docSnapshot.data()
 
   // get questions collection
-  const q = query(
-    collection(db, `categories`, 'K8ynKpXliXOxuMRJEwc4', 'questions'),
-  )
+  const q = query(collection(db, `categories`, id, 'questions'))
   const qureySnapshot = await getDocs(q)
   const questions: Array<Question> = []
   qureySnapshot.docs.forEach(doc => {
