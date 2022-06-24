@@ -5,12 +5,12 @@ import {
   getCategoriesFailureAction,
 } from './categories.action'
 
-interface Props {
+export interface Props {
   isLoading: boolean
   categoryList: Array<Category>
 }
 
-const initialState: Props = {
+export const initialState: Props = {
   isLoading: false,
   categoryList: [],
 }

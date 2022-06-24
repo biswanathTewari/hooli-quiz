@@ -7,12 +7,12 @@ import {
   clearScoreAction,
 } from './quiz.actions'
 
-interface Props extends Quiz {
+export interface Props extends Quiz {
   isLoading: boolean
   score: number
 }
 
-const initialState: Props = {
+export const initialState: Props = {
   isLoading: false,
   info: {
     id: '',

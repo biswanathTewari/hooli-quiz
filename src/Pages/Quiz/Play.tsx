@@ -17,6 +17,7 @@ import {
   SubmitModal,
   ResultModal,
 } from '../../components'
+import { secondsToTime } from './helper'
 import { Quiz } from '../../services'
 
 interface Props extends Quiz {
@@ -42,22 +43,8 @@ const Play = ({
   const [timeDisplay, setTimeDisplay] = React.useState<string>('00:00')
   const [time, setTime] = React.useState<number>(-1)
 
-  const secondsToTime = (timeInSecs: number = 0) => {
-    // let h = Math.floor(timeInSecs / 3600)
-    //     .toString()
-    //     .padStart(2, '0'),
-    let m = Math.floor((timeInSecs % 3600) / 60)
-        .toString()
-        .padStart(2, '0'),
-      s = Math.floor(timeInSecs % 60)
-        .toString()
-        .padStart(2, '0')
-
-    return setTimeDisplay(`${m}m:${s}s`)
-  }
-
   React.useEffect(() => {
-    setTime(10) //Number(info.time) * 60
+    setTime(Number(info.time) * 60)
   }, [info.time])
 
   React.useEffect(() => {
@@ -73,7 +60,7 @@ const Play = ({
       setShowScore(true)
     }
 
-    secondsToTime(time)
+    setTimeDisplay(secondsToTime(time))
 
     return () => clearInterval(interval)
   }, [time])

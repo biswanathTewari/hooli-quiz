@@ -21,7 +21,7 @@ import {
 import { AiOutlineLeft } from 'react-icons/ai'
 
 import { PrimaryButton } from '../../components'
-import { useAuthForm } from '../../hooks'
+import { useAuthForm, useDocumentTitle } from '../../hooks'
 import { getIsLoggedIn, loginAction, getIsUserLoading } from '../../store'
 import { BooksBG, QuotesPNG, VectorPNG } from '../../assets/images'
 
@@ -42,6 +42,7 @@ const Login = () => {
   const from = location.state ? location.state.from?.pathname : '/'
   const isLoggedIn = useSelector(getIsLoggedIn)
   const isLoading = useSelector(getIsUserLoading)
+  useDocumentTitle('Login | Hooli')
 
   const onSubmitHandler = (e: any) => {
     e.preventDefault()

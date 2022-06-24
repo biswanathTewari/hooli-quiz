@@ -8,7 +8,7 @@ import {
 } from './categories.action'
 import { getCategoriesService, Category } from '../../services'
 
-function* getCategoriesSaga(): SagaIterator {
+export function* getCategoriesSaga(): SagaIterator {
   try {
     const response: Array<Category> = yield call(getCategoriesService)
     yield put({ type: getCategoriesSuccessAction, payload: response })

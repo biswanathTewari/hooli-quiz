@@ -8,13 +8,13 @@ import {
   registerFailureAction,
 } from './user.action'
 
-interface Props {
+export interface Props {
   isLoading: boolean
   isLoggedIn: boolean
   user: UserProp
 }
 
-const initialState: Props = {
+export const initialState: Props = {
   isLoading: false,
   isLoggedIn: false,
   user: {
