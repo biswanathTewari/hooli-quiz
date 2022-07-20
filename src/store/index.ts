@@ -4,6 +4,7 @@ import createSagaMiddleware from '@redux-saga/core'
 import CategoriesReducer from './categories/categories.reducer'
 import UserReducer from './user/user.reducer'
 import QuizReducer from './quiz/quiz.reducer'
+import { logoutAction } from './user/user.action'
 import { rootSaga } from './rootSaga'
 
 const combineReducer = combineReducers({
@@ -13,7 +14,7 @@ const combineReducer = combineReducers({
 })
 
 const rootReducer = (state: any, action: any) => {
-  if (action.type === 'LOGOUT') {
+  if (action.type === logoutAction) {
     state = undefined
   }
   return combineReducer(state, action)
