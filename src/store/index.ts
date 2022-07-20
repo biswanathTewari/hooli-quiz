@@ -1,5 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware from '@redux-saga/core'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
 import CategoriesReducer from './categories/categories.reducer'
 import UserReducer from './user/user.reducer'
@@ -20,13 +22,22 @@ const rootReducer = (state: any, action: any) => {
   return combineReducer(state, action)
 }
 
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 const middleware = createSagaMiddleware()
 
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
   middleware: [middleware],
   devTools: true,
 })
+
+export let persistor = persistStore(store)
 
 middleware.run(rootSaga)
 
