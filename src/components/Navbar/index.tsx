@@ -1,16 +1,26 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { HStack, Flex, useColorModeValue, Button } from '@chakra-ui/react'
 import { AiOutlineLogin, AiOutlineLogout } from 'react-icons/ai'
 
 import { ColorBtn } from '../'
-import { getIsLoggedIn } from '../../store'
+import { getIsLoggedIn, logoutAction } from '../../store'
 
 const Navbar = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const svgColor = useColorModeValue('black', 'white')
   const isLoggedIn = useSelector(getIsLoggedIn)
+
+  const authHandler = () => {
+    if (isLoggedIn) {
+      dispatch({ type: logoutAction })
+      navigate('/')
+    } else {
+      navigate('/login')
+    }
+  }
   return (
     <Flex
       w={'100%'}
@@ -37,9 +47,7 @@ const Navbar = () => {
           rightIcon={isLoggedIn ? <AiOutlineLogout /> : <AiOutlineLogin />}
           colorScheme="teal"
           variant="outline"
-          onClick={() => {
-            navigate('/login')
-          }}
+          onClick={authHandler}
         >
           {isLoggedIn ? 'Logout' : 'Login'}
         </Button>
