@@ -9,7 +9,7 @@
 
 - React
 - Chakra UI
-- Javascript
+- Typescript
 
 #### Built With -
 
@@ -46,4 +46,6 @@ https://hooliquiz.netlify.app/
 - Authentication: 
     - User Signup 
     - User Login
+    - User logout
 - Responsive
+- Dark Mode
